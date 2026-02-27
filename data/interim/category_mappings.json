@@ -6723,5 +6723,54 @@
     "Late_delivery_risk": [
         0,
         1
+    ],
+    "shipping_day": [
+        "Saturday",
+        "Thursday",
+        "Wednesday",
+        "Tuesday",
+        "Monday",
+        "Friday",
+        "Sunday"
+    ],
+    "shipping_month": [
+        "February",
+        "January",
+        "October",
+        "April",
+        "November",
+        "December",
+        "June",
+        "August",
+        "May",
+        "July",
+        "September",
+        "March"
+    ],
+    "shipping_hour": [
+        22,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        18,
+        17,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0,
+        23,
+        21,
+        20,
+        13,
+        14,
+        15,
+        19,
+        16
     ]
 }
