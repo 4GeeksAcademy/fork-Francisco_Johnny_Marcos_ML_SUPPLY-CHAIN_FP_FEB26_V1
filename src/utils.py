@@ -48,6 +48,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import MultinomialNB, BernoulliNB, GaussianNB
 from xgboost import XGBClassifier
+from sklearn.cluster import KMeans
 
 # Supervised: Regression
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, RidgeCV, LassoCV
