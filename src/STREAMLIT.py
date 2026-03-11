@@ -147,11 +147,22 @@ if st.button("Analyze Order Risk"):
     
     with col3:
         st.metric("Logistic Profile", readable_cluster)
-        if cluster == 2:
-            st.warning("**Strategic Insight**: This order is being promised too fast for our current logistics capacity. Recommend increasing the scheduled days to at least 3.")
-        elif cluster == 1:
-            st.info("**Optimization Tip**: This profile is highly efficient. Continue using these parameters for this route.")
+        if cluster == 2: # Critical Risk (1.35 days avg)
+            st.error("Action Required: Reschedule Order")
+            st.write(f"The current promise of **{scheduled_days} day(s)** is physically impossible for our current logistics to {selected_city}.")
+    
+            suggested_days = 4 # Shift to Cluster 1's average
+            st.info(f"**To move this to 'Low Risk' (Cluster 1):** Increase 'Scheduled Days' to **{suggested_days}**. "
+            "This ensures an 85%+ on-time delivery rate.")
 
+        elif cluster == 0: # Moderate Risk (2.95 days avg)
+            st.warning("Action Recommended: Review Buffer")
+            st.write("This order is in the 'Moderate' zone. Adding **1 extra day** would likely shift this into the 'Low Risk' green zone.")
+    
+        else: # Cluster 1 (4.0 days avg)
+            st.success("No Action Needed")
+            st.write("The current scheduling window is optimal. This order is highly likely to meet its deadline.")
+            
     # 5. Interactive Map for company visibility
     st.subheader("Order Location (Puerto Rico Hub)")
     # We will generate dummy coordinates based on City IDs for visual impact
