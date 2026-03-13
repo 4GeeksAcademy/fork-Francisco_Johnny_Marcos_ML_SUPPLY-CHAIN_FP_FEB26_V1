@@ -183,6 +183,13 @@ Order_State, Order_State_num = select_from_mapping("Order State", mappings["Orde
 Order_Status, Order_Status_num = select_from_mapping("Order Status", mappings["Order_Status"])
 Logistics_Corridor_ID = st.sidebar.slider("Logistics Corridor", 0, 20, 3)
 
+
+#---------
+
+# PREDICTION  1
+
+#-----------
+
 predict_button = st.sidebar.button("🚀 Run Prediction")
 
 predictors = [
@@ -195,9 +202,7 @@ predictors = [
     'shipping_month_num', 'Price_Per_Unit', 'Logistics_Corridor_ID'
 ]
 input_data = pd.DataFrame(np.zeros((1, len(predictors))), columns= predictors)
-if predict_button:
-    # Crear DataFrame de entrada
-    input_data = pd.DataFrame({
+input_data = pd.DataFrame({
         'Days_for_shipment_scheduled': [Days_for_shipment_scheduled],
         'Benefit_per_order': [Benefit_per_order],
         'Order_Item_Discount': [0.0],                # si no tienes input, pones 0
@@ -222,7 +227,8 @@ if predict_button:
         'Price_Per_Unit': [Price_Per_Unit],
         'Logistics_Corridor_ID': [Logistics_Corridor_ID]
     })
-
+if predict_button:
+    
     # Predicción
     prediction = model.predict(input_data)[0]
     label_map = {0: "On Time", 1: "Late"}
@@ -330,24 +336,29 @@ if st.button("Analyze Order Risk"):
 
     # 4. Interactive UI display
     st.divider()
-    col1, col2, col3 = st.columns(3)
 
+    # Bloque de probabilidad y estado
+    with st.container():
+        col1, col2 = st.columns([1, 2])  # Col2 más ancho
     with col1:
         st.metric("Late Risk Probability", f"{prob * 100:.1f}%")
-
     with col2:
         if prediction == 1:
             st.error("Status: LATE EXPECTED")
         else:
             st.success("Status: ON TIME")
-    
-    with col3:
+
+    # Bloque de perfil logístico
+    with st.container():
         st.metric("Logistic Profile", readable_cluster)
-        if cluster == 2:
-            st.warning("**Strategic Insight**: This order is being promised too fast for our current logistics capacity. Recommend increasing the scheduled days to at least 3.")
-        elif cluster == 1:
-            st.info("**Optimization Tip**: This profile is highly efficient. Continue using these parameters for this route.")
-            st.divider()
+    if cluster == 2:
+        st.warning(
+            "**Strategic Insight**: This order is being promised too fast for our current logistics capacity. Recommend increasing the scheduled days to at least 3."
+        )
+    elif cluster == 1:
+        st.info(
+            "**Optimization Tip**: This profile is highly efficient. Continue using these parameters for this route."
+        )
         
     st.subheader("Strategic Recommendation")
 
